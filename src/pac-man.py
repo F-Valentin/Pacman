@@ -1,5 +1,5 @@
 import sys
-from parsing import LevelConfiguration
+from parsing import GameConfiguration
 
 def main() -> None:
 
@@ -10,7 +10,7 @@ def main() -> None:
     file_path = sys.argv[1]
 
     try:
-        config = LevelConfiguration(file_path)
+        config = GameConfiguration(file_path)
         print("Configuration loaded successfully!")
 
     except (FileNotFoundError, ValueError, PermissionError) as e:

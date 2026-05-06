@@ -1,7 +1,7 @@
 import json
 import os
 
-class LevelConfiguration:
+class GameConfiguration:
     def __init__(self, file_path: str):
         self.file_path = file_path
         self.lives = None
