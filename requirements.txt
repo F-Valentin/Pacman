@@ -1,3 +1,4 @@
-flake8>=5.0.0
-mypy>=0.950
+flake8
+mypy
 hjson
+pydantic

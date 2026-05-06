@@ -1,6 +1,7 @@
 import sys
 from parsing import GameConfiguration
 
+
 def main() -> None:
 
     if len(sys.argv) != 2:
@@ -19,6 +20,7 @@ def main() -> None:
         print(f"Configuration Error: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
 
 if __name__ == "__main__":
     main()
