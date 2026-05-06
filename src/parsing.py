@@ -1,9 +1,10 @@
-import json
+import hjson
 import os
 
 class GameConfiguration:
     def __init__(self, file_path: str):
         self.file_path = file_path
+        self.highscore_filename = None
         self.lives = None
         self.pacgum = None
         self.points_per_pacgum = None
@@ -21,8 +22,9 @@ class GameConfiguration:
 
         try:
             with open(self.file_path, 'r', encoding='utf-8') as f:
-                self.raw_data = json.load(f)
+                self.raw_data = hjson.load(f)
             
+            self.highscore_filename = self.raw_data.get("highscore_filename")
             self.lives = self.raw_data.get("lives", "3")
             self.pacgum = self.raw_data.get("pacgum", "42")
             self.points_per_pacgum = self.raw_data.get("points_per_pacgum", "10")
@@ -31,7 +33,7 @@ class GameConfiguration:
             self.seed = self.raw_data.get("speed", "42")
             self.level_max_time = self.raw_data.get("level_max_time", "90")
 
-        except json.JSONDecodeError:
+        except hjson.JSONDecodeError:
             raise ValueError("The file provided is not a valid JSON.")
         except PermissionError:
             raise PermissionError("Permission denied when accessing the config file.")

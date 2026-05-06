@@ -12,6 +12,8 @@ def main() -> None:
     try:
         config = GameConfiguration(file_path)
         print("Configuration loaded successfully!")
+        print(config.lives)
+        print(config.highscore_filename)
 
     except (FileNotFoundError, ValueError, PermissionError) as e:
         print(f"Configuration Error: {e}")
