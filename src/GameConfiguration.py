@@ -2,7 +2,7 @@ import hjson
 import os
 
 
-class GameConfiguration:
+class GameConfig:
     def __init__(self, file_path: str):
         self.file_path = file_path
 
