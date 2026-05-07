@@ -18,24 +18,43 @@ class GameConfiguration:
 
         self._load_config()
 
+    @staticmethod
+    def _parse_bool(value: object, key: str) -> bool:
+        if not isinstance(value, bool):
+            raise ValueError(
+                f"'{key}' must be a boolean (true/false), "
+                f"got {type(value).__name__!r} instead.")
+        return value
+
+    @staticmethod
+    def _parse_int(value: object, key: str) -> int:
+        if not isinstance(value, int) or isinstance(value, bool):
+            raise ValueError(
+                f"'{key}' must be an integer, "
+                f"got {type(value).__name__!r} instead.")
+        return value
+
     def _load_config(self) -> None:
         if not os.path.exists(self.file_path):
-            raise FileNotFoundError(f"Configuration file '{self.file_path}' "
-                                    f"not found.")
+            raise FileNotFoundError(
+                f"Configuration file '{self.file_path}' not found.")
 
         try:
             with open(self.file_path, 'r', encoding='utf-8') as f:
                 self.raw_data = hjson.load(f)
+        except hjson.JSONDecodeError as e:
+            raise ValueError("The file provided is not a valid JSON.") from e
+        except PermissionError as e:
+            raise PermissionError(
+                "Permission denied when accessing the config file.") from e
 
-            self.custom = bool(self.raw_data.get("custom", False))
-            if self.custom is True:
-                self.lives = int(self.raw_data.get("lives", 3))
-                self.level_max_time = int(
-                    self.raw_data.get("level_max_time", 90))
-        except hjson.JSONDecodeError:
-            raise ValueError("The file provided is not a valid JSON.")
-        except PermissionError:
-            raise PermissionError("Permission denied when accessing "
-                                  "the config file.")
+        try:
+            self.custom = self._parse_bool(
+                self.raw_data.get("custom", False), "custom")
+            if self.custom:
+                self.lives = self._parse_int(
+                    self.raw_data.get("lives", 3), "lives")
+                self.level_max_time = self._parse_int(
+                    self.raw_data.get("level_max_time", 90), "level_max_time")
         except ValueError:
-            raise ValueError("Configuration values type is incorect")
+            raise

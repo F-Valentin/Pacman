@@ -12,9 +12,7 @@ def main() -> None:
 
     try:
         config = GameConfiguration(file_path)
-        print("Game Configuration:")
-        print(config.custom)
-        print(config.lives)
+        print(f"Game Configuration loaded (custom:{config.custom})")
 
     except (FileNotFoundError, ValueError, PermissionError) as e:
         print(f"Configuration Error: {e}")
